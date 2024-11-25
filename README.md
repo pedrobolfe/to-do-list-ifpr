@@ -33,7 +33,3 @@ Este é um projeto simples para gerenciamento de tarefas com diferentes priorida
     json-server --watch data.json --port 3000
 ```
 3. Abra o arquivo `index.html` no navegador para executar o projeto.
-
-## Licença
-
-Este projeto está sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
