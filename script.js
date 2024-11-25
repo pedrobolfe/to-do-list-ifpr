@@ -1,4 +1,3 @@
-
 let dados = [];
 
 // carregar dados
@@ -56,7 +55,6 @@ async function atualizarTarefa(id, tarefaAtualizada) {
 
         if (response.ok) {
             const data = await response.json();
-            console.log('Tarefa atualizada com sucesso:', data);
         } else {
             const errorText = await response.text();
             console.error('Erro ao atualizar a tarefa:', response.status, response.statusText, errorText);
@@ -66,14 +64,29 @@ async function atualizarTarefa(id, tarefaAtualizada) {
     }
 }
 
+async function deletarTarefa(id) {
+    try {
+        const response = await fetch(`http://localhost:3000/tarefas/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            console.log(`Tarefa com ID ${id} excluída com sucesso`);
+        } else {
+            const errorText = await response.text();
+            console.error('Erro ao excluir a tarefa:', response.status, response.statusText, errorText);
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+    }
+}
+
+///////////////////////////////////
 async function concluirTarefa(id) {
-    console.log('Função concluirTarefa chamada com id:', id); // Verifica se a função está sendo chamada
-    
     let tarefa = dados.tarefas.find(tarefa => tarefa.id == id);
     
     if (!tarefa) {
-        console.log('Tarefa não encontrada');
-        return; // Adiciona uma verificação para evitar erros caso a tarefa não seja encontrada
+        return; 
     }
 
     tarefa.dataFim = new Date().toLocaleDateString('pt-BR');
@@ -82,14 +95,11 @@ async function concluirTarefa(id) {
     
     tarefa.concluido = true;
     tarefa.tempo = tempoTarefaMili;
-
-    console.log('Tarefa após atualização:', tarefa); // Verifica se a tarefa foi atualizada corretamente
     
     await atualizarTarefa(id, tarefa); // Atualiza a tarefa no servidor
 }
 
 async function comecarTarefa(id){ // tempo atual em milisegundos
-    console.log('btn de começar clicado')
     let tarefa  = dados.tarefas.find(tarefa=> tarefa.id == id);
 
     if (tarefa.dataIni && tarefa.ultimoPlay) { // se ja tiver começado, não alterar os valores
@@ -136,26 +146,55 @@ async function criarTarefa(){
 
     criarNovaTarefaJson(novaTarefa);
 }
+////////////////// modal
+
+async function removerTarefa(id){
+    console.log("remover ", id);
+    
+    await deletarTarefa(id);
+}
+
+function exibirModal(elemento, idTarefa, nomeTarefa) {
+    const modalElement = document.getElementById('exampleModal'); // Referencia a div do modal existente
+
+    // Adicionando conteúdo dentro da div do modal
+    modalElement.innerHTML = `  <!-- Modal Dialog -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Remover Tarefa ${idTarefa}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja remover a tarefa: <strong>${nomeTarefa}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="removerTarefa(${idTarefa})">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show(); // Exibe o modal
+}
+
 
 ////////////////////////// funcao para editar
 async function salvarEdicao(botao, id){
     const row = botao.closest("tr");
-    console.log(row, id);
     const nomeTarefa = row.cells[1].querySelector("input").value;
-    console.log(nomeTarefa)
     let tarefa  = dados.tarefas.find(tarefa=> tarefa.id == id);
     tarefa.nomeTarefa = nomeTarefa;
 
     // Recarrega a tabela para exibir os valores atualizados
-    console.log(tarefa);
-
     await atualizarTarefa(tarefa.id, tarefa);
 }
 
 function habilitarEdicao(botao, id) {
     // Encontra a linha correspondente
     const row = botao.closest("tr");
-    console.log(botao, id)
 
     // Obtém os dados do prato para preencher os inputs
     const tarefa = dados.tarefas.find(tarefa => tarefa.id == id);
@@ -167,6 +206,12 @@ function habilitarEdicao(botao, id) {
             <td><input type="text" value="${tarefa.nomeTarefa}"></td>
             <td>Alta</td>
             <td><i class="fa fa-save" onclick="salvarEdicao(this, ${tarefa.id})"></i></td>
+            <td>
+                <i class="bi bi-trash" 
+                    onclick="exibirModal(this, ${tarefa.id}, '${tarefa.nomeTarefa}')"
+                    style="cursor: pointer;">
+                </i>
+            </td>
             <td><i class="fa fa-play" onclick="comecarTarefa(${tarefa.id})"></i></td>
             <td><i class="fas fa-check-circle" onclick="concluirTarefa(${tarefa.id})"></i></td>
         `;
@@ -195,6 +240,11 @@ function addInPrioridadeAlta(tarefa) {
         <td class="${classe}">${tarefa.nomeTarefa}</td>
         <td class="${classe}">Alta</td>
         <td class="${classe}"><i class="fa fa-edit" onclick="habilitarEdicao(this, ${tarefa.id})"></i></td>
+        <td class="${classe}">
+            <i class="bi bi-trash" 
+                onclick="exibirModal(this, ${tarefa.id}, '${tarefa.nomeTarefa}')">
+            </i>
+        </td>   
         <td class="${classe}"><i class="fa fa-play" onclick="comecarTarefa(${tarefa.id})"></i></td>
         <td class="${classe}"><i class="fas fa-check-circle" onclick="concluirTarefa(${tarefa.id})"></i></td>
     `;
@@ -220,8 +270,13 @@ function addInPrioridadeMedia(tarefa) {
     novaLinha.innerHTML = `
         <td class="${classe}">${tarefa.id}</td>
         <td class="${classe}">${tarefa.nomeTarefa}</td>
-        <td class="${classe}">Alta</td>
+        <td class="${classe}">Media</td>
         <td class="${classe}"><i class="fa fa-edit" onclick="habilitarEdicao(this, ${tarefa.id})"></i></td>
+        <td class="${classe}">
+            <i class="bi bi-trash" 
+                onclick="exibirModal(this, ${tarefa.id}, '${tarefa.nomeTarefa}')">
+            </i>
+        </td> 
         <td class="${classe}"><i class="fa fa-play" onclick="comecarTarefa(${tarefa.id})"></i></td>
         <td class="${classe}"><i class="fas fa-check-circle" onclick="concluirTarefa(${tarefa.id})"></i></td>
     `;
@@ -248,35 +303,16 @@ function addInPrioridadeBaixa(tarefa) {
     novaLinha.innerHTML = `
         <td class="${classe}">${tarefa.id}</td>
         <td class="${classe}">${tarefa.nomeTarefa}</td>
-        <td class="${classe}">Alta</td>
+        <td class="${classe}">Baixa</td>
         <td class="${classe}"><i class="fa fa-edit" onclick="habilitarEdicao(this, ${tarefa.id})"></i></td>
+        <td class="${classe}">
+            <i class="bi bi-trash" 
+                onclick="exibirModal(this, ${tarefa.id}, '${tarefa.nomeTarefa}')">
+            </i>
+        </td> 
         <td class="${classe}"><i class="fa fa-play" onclick="comecarTarefa(${tarefa.id})"></i></td>
         <td class="${classe}"><i class="fas fa-check-circle" onclick="concluirTarefa(${tarefa.id})"></i></td>
     `;
 
     containerBaixas.appendChild(novaLinha);
-}
-
-
-
-///////////////////// METODOS PARA OS BOTOES DE EDITAR, COMECAR E CONCLUIR
-
-
-//adicionar a tarefa no arquiivo json
-function salvarDadosAtualizados() {
-    fetch('./data.json', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dados),
-    })
-        .then(response => {
-            if (response.ok) {
-                console.log('Dados salvos com sucesso!');
-            } else {
-                console.error('Erro ao salvar os dados.');
-            }
-        })
-        .catch(erro => console.error('Erro na comunicação com o servidor:', erro));
 }
