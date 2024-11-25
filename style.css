@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f1f1f1;
+  margin: 0;
+  padding: 0;
+}
+  
+.navbar {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+  
+.navbar .navbar-brand img {
+  border-radius: 50%;
+}
+
+h1 {
+  font-family: 'Rubik Mono One', sans-serif;
+  color: #343a40;
+  font-size: 2rem;
+}
+
+table {
+  width: 100%;
+  max-width: 1200px; 
+  margin: 0 auto; 
+  overflow-x: auto; 
+  border-collapse: collapse; 
+}
+
+td, th {
+  padding: 8px; 
+  text-align: left;
+}
+
+
+.input-box i {
+  color: rgb(97, 156, 238);
+}
+
+.input-box i:hover{
+  color: rgb(64, 138, 241);
+}
+  
+select, input[type="text"] {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+  
+select {
+  width: 150px;
+  margin-right: 10px;
+}
+
+select option {
+  font-weight: bold;
+  color: white;
+}
+  
+select:focus, input[type="text"]:focus {
+  outline: none;
+  border-color: #007bff;
+}
+  
+i {
+  font-size: 20px;
+  cursor: pointer;
+  color: #007bff;
+}
+  
+i:hover {
+  color: #0056b3;
+}
+  
+.list-tarefas {
+  margin-top: 20px;
+}
+  
+.list-tarefas > div {
+  margin-bottom: 10px;
+}
+  
+.input-box {
+  padding: 12px;
+  background-color: #f1efef;
+  margin: 8px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+  
+.list-alta {
+  border-left: 5px solid #dc3545;
+}
+
+.list-media {
+  border-left: 5px solid #ffc107; 
+}
+  
+.list-baixa {
+  border-left: 5px solid #28a745;
+}
+
+.em-execucao {
+  background-color: rgba(234, 240, 50, 0.3) !important; 
+}
+
+.concluida {
+  background-color: rgba(141, 243, 141, 0.3) !important; 
+  color: white;
+}
+
+.pendente {
+  background-color: rgba(199, 201, 199, 0.3) !important; 
+
+}
+  
+.input-box input[type="text"] {
+  background-color: transparent;
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid rgb(136, 134, 134);
+  color: #333;
+  margin-left: 10px;
+  flex: 1;
+}
+  
+.input-box input[type="text"]:readonly {
+  color: #666;
+}
+
+.input-box i {
+  margin-left: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #007bff;
+}
+  
+.input-box i:hover {
+  color: #0056b3;
+}
+ 
+.input-box i.fa-play {
+  color: #28a745; 
+}
+  
+.input-box i.fa-play:hover {
+  color: #218838;
+}
+  
+.input-box i.fa-check-circle {
+  color: #17a2b8; 
+}
+  
+.input-box i.fa-check-circle:hover {
+  color: #138496;
+}
+  
+.input-box i.fa-edit {
+  color: #ffc107; 
+}
+  
+.input-box i.fa-edit:hover {
+  color: #e0a800;
+}
+  
+footer {
+  background-color: #343a40;
+  color: #fff;
+  padding: 20px 0;
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+  
+footer h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+  
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+  
+footer a:hover {
+  text-decoration: underline;
+}
