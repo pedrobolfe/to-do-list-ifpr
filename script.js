@@ -102,7 +102,6 @@ async function comecarTarefa(id){ // tempo atual em milisegundos
     await atualizarTarefa(id, tarefa);
 }
 
-
 // evento de adicionar tarefar
 async function criarTarefa(){
     const prioridade = document.getElementById("prioridade").value;
@@ -114,7 +113,7 @@ async function criarTarefa(){
     }
 
     const novaTarefa = {
-        id: (dados.tarefas.length + 1), // ID único com base no tempo atual
+        id: String(dados.tarefas.length + 1), // ID único com base no tempo atual
         prioridade: prioridade,
         nomeTarefa: tarefa,
         concluido: false,

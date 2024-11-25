@@ -2,17 +2,6 @@
   "tarefas": [
     {
       "id": "1",
-      "prioridade": "Alta",
-      "nomeTarefa": "teste edição 7",
-      "concluido": true,
-      "dataCreate": "25/11/2024",
-      "dataIni": "25/11/2024",
-      "dataFim": "",
-      "tempo": 0,
-      "ultimoPlay": 1732535818212
-    },
-    {
-      "id": "2",
       "prioridade": "Media",
       "nomeTarefa": "Trabalho Prog Web: TO DO LIST IFPR",
       "concluido": true,
@@ -23,9 +12,9 @@
       "ultimoPlay": 1732535711164
     },
     {
-      "id": "3",
-      "prioridade": "Baixa",
-      "nomeTarefa": "trabalho de inglês",
+      "id": "2",
+      "prioridade": "Media",
+      "nomeTarefa": "Atividade de Inglês",
       "concluido": false,
       "dataCreate": "25/11/2024",
       "dataIni": "",
@@ -34,9 +23,20 @@
       "ultimoPlay": 0
     },
     {
-      "id": 4,
+      "id": "3",
       "prioridade": "Alta",
-      "nomeTarefa": "teste 1",
+      "nomeTarefa": "Atividade de Banco de Dados",
+      "concluido": false,
+      "dataCreate": "25/11/2024",
+      "dataIni": "25/11/2024",
+      "dataFim": "",
+      "tempo": 0,
+      "ultimoPlay": 1732539218646
+    },
+    {
+      "id": "4",
+      "prioridade": "Baixa",
+      "nomeTarefa": "Teste 123",
       "concluido": false,
       "dataCreate": "25/11/2024",
       "dataIni": "",
