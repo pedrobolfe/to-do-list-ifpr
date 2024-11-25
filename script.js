@@ -256,27 +256,3 @@ function addInPrioridadeBaixa(tarefa) {
 
     containerBaixas.appendChild(novaLinha);
 }
-
-
-
-///////////////////// METODOS PARA OS BOTOES DE EDITAR, COMECAR E CONCLUIR
-
-
-//adicionar a tarefa no arquiivo json
-function salvarDadosAtualizados() {
-    fetch('./data.json', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dados),
-    })
-        .then(response => {
-            if (response.ok) {
-                console.log('Dados salvos com sucesso!');
-            } else {
-                console.error('Erro ao salvar os dados.');
-            }
-        })
-        .catch(erro => console.error('Erro na comunicação com o servidor:', erro));
-}
