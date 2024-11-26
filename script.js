@@ -11,7 +11,6 @@ async function carregarDados() {
         dados = await carregarJson();
         console.log('Dados carregados:', dados);
 
-        // Agora você pode processar os dados carregados aqui
         for (let tarefa of dados.tarefas) {
             if (tarefa.prioridade === "Alta") {
                 addInPrioridadeAlta(tarefa);
