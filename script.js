@@ -9,9 +9,7 @@ async function carregarJson() {
 async function carregarDados() {
     try {
         dados = await carregarJson();
-        console.log('Dados carregados:', dados);
 
-        // Agora você pode processar os dados carregados aqui
         for (let tarefa of dados.tarefas) {
             if (tarefa.prioridade === "Alta") {
                 addInPrioridadeAlta(tarefa);
@@ -28,7 +26,7 @@ async function carregarDados() {
 
 carregarDados();
 
-////////////////////////// FAZER PUT E POST NO JSON - (JSON SERVER)
+////////////////////////// FAZER PUT E POST E DELET NO JSON - (JSON SERVER)
 
 async function criarNovaTarefaJson(novaTarefa){
     await fetch('http://localhost:3000/tarefas', {
@@ -100,9 +98,10 @@ async function concluirTarefa(id) {
 }
 
 async function comecarTarefa(id){ // tempo atual em milisegundos
+    console.log("comecando tarefa");
     let tarefa  = dados.tarefas.find(tarefa=> tarefa.id == id);
 
-    if (tarefa.dataIni && tarefa.ultimoPlay) { // se ja tiver começado, não alterar os valores
+    if (tarefa.ultimoPlay !== null) { // se ja tiver começado, não alterar os valores
         return;
     }
 
@@ -114,6 +113,7 @@ async function comecarTarefa(id){ // tempo atual em milisegundos
 
 // evento de adicionar tarefar
 async function criarTarefa(){
+    const maiorId = Math.max(...dados.tarefas.map(tarefa => parseInt(tarefa.id)));
     const prioridade = document.getElementById("prioridade").value;
     const tarefa = document.getElementById("atividade").value;
 
@@ -123,7 +123,7 @@ async function criarTarefa(){
     }
 
     const novaTarefa = {
-        id: String(dados.tarefas.length + 1), // ID único com base no tempo atual
+        id: ( maiorId+1).toString(), // tem que ser em string pq senao da pau
         prioridade: prioridade,
         nomeTarefa: tarefa,
         concluido: false,
@@ -131,7 +131,7 @@ async function criarTarefa(){
         dataIni: "", // Data atual no formato dd/mm/yyyy
         dataFim: "",
         tempo: 0,
-        ultimoPlay: 0
+        ultimoPlay: null // começa em null
     };
 
     dados.tarefas.push(novaTarefa)
@@ -186,7 +186,7 @@ async function salvarEdicao(botao, id){
     const row = botao.closest("tr");
     const nomeTarefa = row.cells[1].querySelector("input").value;
     const prioridade = row.cells[2].querySelector("select").value;
-    
+
     let tarefa  = dados.tarefas.find(tarefa=> tarefa.id == id);
     tarefa.nomeTarefa = nomeTarefa;
     tarefa.prioridade = prioridade;
@@ -238,7 +238,7 @@ function addInPrioridadeAlta(tarefa) {
     if (tarefa.concluido){
         classe = 'concluida';
         novaLinha.classList.remove('em-execucao');
-    } else if (!tarefa.concluido && tarefa.ultimoPlay > 0){
+    } else if (tarefa.ultimoPlay != null){
         classe = 'em-execucao';
     } else {
         classe = 'pendente';
@@ -270,7 +270,7 @@ function addInPrioridadeMedia(tarefa) {
     if (tarefa.concluido){
         classe = 'concluida';
         novaLinha.classList.remove('em-execucao');
-    } else if (!tarefa.concluido && tarefa.ultimoPlay > 0){
+    } else if (tarefa.ultimoPlay != null){
         classe = 'em-execucao';
     } else {
         classe = 'pendente';
@@ -303,7 +303,7 @@ function addInPrioridadeBaixa(tarefa) {
     if (tarefa.concluido){
         classe = 'concluida';
         novaLinha.classList.remove('em-execucao');
-    } else if (!tarefa.concluido && tarefa.ultimoPlay > 0){
+    } else if (tarefa.ultimoPlay != null){
         classe = 'em-execucao';
     } else {
         classe = 'pendente';
