@@ -85,7 +85,7 @@ async function deletarTarefa(id) {
 async function concluirTarefa(id) {
     let tarefa = dados.tarefas.find(tarefa => tarefa.id == id);
     
-    if (!tarefa) {
+    if (!tarefa || tarefa.datafim || tarefa.concluido || tarefa.tempo.length <= 1) {
         return; 
     }
 
@@ -95,7 +95,7 @@ async function concluirTarefa(id) {
     
     tarefa.concluido = true;
     tarefa.tempo = tempoTarefaMili;
-    
+
     await atualizarTarefa(id, tarefa); // Atualiza a tarefa no servidor
 }
 
